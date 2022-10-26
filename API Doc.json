@@ -1,0 +1,177 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "REST APIs for File Management",
+    "version": "1.0",
+    "title": "File Management API Documentation",
+    "license": {
+      "name": "Copy Right of Rishabh"
+    }
+  },
+  "host": "localhost:8080",
+  "tags": [
+    {
+      "name": "file-storage-controller",
+      "description": "File Storage Controller"
+    }
+  ],
+  "paths": {
+    "/file-storage/files": {
+      "get": {
+        "tags": [
+          "file-storage-controller"
+        ],
+        "summary": "getAllFiles",
+        "operationId": "getAllFilesUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pageLength",
+            "in": "query",
+            "description": "pageLength",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageNum",
+            "in": "query",
+            "description": "pageNum",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FileStorageResponse"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "file-storage-controller"
+        ],
+        "summary": "saveFile",
+        "operationId": "saveFileUsingPOST",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "required": false,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/FileStorageResponse"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/file-storage/files/{fileName}": {
+      "delete": {
+        "tags": [
+          "file-storage-controller"
+        ],
+        "summary": "deleteFile",
+        "operationId": "deleteFileUsingDELETE",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "path",
+            "description": "fileName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CommonResponse"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CommonResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "CommonResponse"
+    },
+    "FileStorageResponse": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "uploadedOn": {
+          "type": "string",
+          "example": "dd-MM-yyyy hh:mm:ss"
+        }
+      },
+      "title": "FileStorageResponse"
+    }
+  }
+}
